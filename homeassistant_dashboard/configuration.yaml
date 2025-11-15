@@ -1,0 +1,11 @@
+...
+lovelace:
+  mode: yaml
+  dashboards:
+    dtsu666-dashboard:
+      mode: yaml
+      filename: lovelace/dtsu666.yaml
+      title: Chint DTSU666
+      icon: mdi:transmission-tower
+      show_in_sidebar: true
+...

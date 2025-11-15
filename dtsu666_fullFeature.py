@@ -7,29 +7,38 @@ import paho.mqtt.client as mqtt
 import json
 import traceback
 import warnings
+import os
 
 # Unterdrücke MQTT Deprecation Warning
 warnings.filterwarnings("ignore", category=DeprecationWarning, module="paho.mqtt.client")
 
 # -------------------------
-# KONFIGURATION
+# KONFIGURATION AUS UMGEBUNGSVARIABLEN
 # -------------------------
-MODBUS_PORT  = '/dev/ttyACM0'
-MODBUS_SLAVE = 1
-BAUDRATE     = 9600
+MODBUS_PORT  = os.getenv('MODBUS_PORT', '/dev/ttyACM0')
+MODBUS_SLAVE = int(os.getenv('MODBUS_SLAVE', '1'))
+BAUDRATE     = int(os.getenv('BAUDRATE', '9600'))
 PARITY       = serial.PARITY_NONE
 STOPBITS     = 1
 BYTESIZE     = 8
-TIMEOUT      = 1.0
+TIMEOUT      = float(os.getenv('TIMEOUT', '1.0'))
 
-MQTT_BROKER  = '192.168.10.63'
-MQTT_PORT    = 1882
-MQTT_USER    = 'user1'
-MQTT_PASS    = 'user1'
-MQTT_PREFIX  = 'chint/dtsu666'
+MQTT_BROKER  = os.getenv('MQTT_BROKER', '192.168.10.63')
+MQTT_PORT    = int(os.getenv('MQTT_PORT', '1882'))
+MQTT_USER    = os.getenv('MQTT_USER', 'user1')
+MQTT_PASS    = os.getenv('MQTT_PASS', 'user1')
+MQTT_PREFIX  = os.getenv('MQTT_PREFIX', 'chint/dtsu666')
 
-DEVICE_NAME  = "Chint DTSU666"
-DEVICE_ID    = "dtsu666_meter"
+DEVICE_NAME  = os.getenv('DEVICE_NAME', 'Chint DTSU666')
+DEVICE_ID    = os.getenv('DEVICE_ID', 'dtsu666_meter')
+
+MEASUREMENT_INTERVAL = int(os.getenv('MEASUREMENT_INTERVAL', '5'))
+
+print(f"Konfiguration geladen:")
+print(f"  Modbus: {MODBUS_PORT} @ {BAUDRATE} baud, Slave {MODBUS_SLAVE}")
+print(f"  MQTT: {MQTT_BROKER}:{MQTT_PORT} als {MQTT_USER}")
+print(f"  Device: {DEVICE_NAME} ({DEVICE_ID})")
+print(f"  Intervall: {MEASUREMENT_INTERVAL}s")
 
 # -------------------------
 # REGISTER DEFINITIONEN
@@ -194,7 +203,7 @@ def main():
         
         print(f"Erfolgreich gelesen: {successful_reads}/{len(REGISTERS)}")
         mqtt_client.loop()
-        time.sleep(5)
+        time.sleep(MEASUREMENT_INTERVAL)
 
 if __name__ == "__main__":
     try:

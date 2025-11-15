@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  dtsu666-reader:
+    build: .
+    container_name: dtsu666-modbus-reader
+    restart: unless-stopped
+    
+    # Environment aus .env Datei laden
+    env_file:
+      - .env
+    
+    # Device Mapping für Modbus USB-RS485 Adapter
+    devices:
+      - "${MODBUS_PORT:-/dev/ttyACM0}:${MODBUS_PORT:-/dev/ttyACM0}"
+    
+    # Privileged für Hardware-Zugriff
+    privileged: false
+    
+    # Logging konfigurieren
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Healthcheck
+    healthcheck:
+      test: ["CMD", "python", "-c", "import paho.mqtt.client as mqtt; import sys; sys.exit(0)"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    
+    # Labels für bessere Organisation
+    labels:
+      - "traefik.enable=false"
+      - "com.dtsu666.service=modbus-reader"
+      - "com.dtsu666.version=1.0"
+
+networks:
+  default:
+    name: dtsu666-network

@@ -1,0 +1,65 @@
+title: Chint DTSU666
+views:
+  - title: Übersicht
+    path: overview
+    icon: mdi:transmission-tower
+    cards:
+
+      - type: markdown
+        content: |
+          # 🔌 Chint DTSU666 – Energiemonitor
+          Live-Daten deiner 3-Phasen Strommessung
+
+      - type: entities
+        title: ⚡ Gesamtleistung & Energie
+        entities:
+          - entity: sensor.chint_dtsu666_power_total
+            name: Gesamtleistung
+          - entity: sensor.chint_dtsu666_energy_total
+            name: Energie Gesamt
+          - entity: sensor.chint_dtsu666_energy_import
+            name: Netzbezug (Import)
+          - entity: sensor.chint_dtsu666_energy_export
+            name: Einspeisung (Export)
+          - entity: sensor.chint_dtsu666_frequency
+            name: Frequenz
+
+      - type: vertical-stack
+        cards:
+
+          - type: entities
+            title: 🔵 Phase A
+            entities:
+              - entity: sensor.chint_dtsu666_voltage_a
+                name: Spannung A
+              - entity: sensor.chint_dtsu666_current_a
+                name: Strom A
+              - entity: sensor.chint_dtsu666_power_a
+                name: Leistung A
+
+          - type: entities
+            title: 🟢 Phase B
+            entities:
+              - entity: sensor.chint_dtsu666_voltage_b
+                name: Spannung B
+              - entity: sensor.chint_dtsu666_current_b
+                name: Strom B
+              - entity: sensor.chint_dtsu666_power_b
+                name: Leistung B
+
+          - type: entities
+            title: 🔴 Phase C
+            entities:
+              - entity: sensor.chint_dtsu666_voltage_c
+                name: Spannung C
+              - entity: sensor.chint_dtsu666_current_c
+                name: Strom C
+              - entity: sensor.chint_dtsu666_power_c
+                name: Leistung C
+
+      - type: history-graph
+        title: 📈 Leistung 24h
+        hours_to_show: 24
+        entities:
+          - sensor.chint_dtsu666_power_total
+        refresh_interval: 30

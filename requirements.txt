@@ -1,0 +1,3 @@
+paho-mqtt>=1.6.0
+minimalmodbus>=2.0.0
+pyserial>=3.5

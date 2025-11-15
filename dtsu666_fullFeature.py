@@ -156,6 +156,18 @@ def main():
                 # Float-Wert bereits korrekt skaliert aus dem Gerät
                 final_value = float_value * reg["scale"]
                 
+                # Runde auf sinnvolle Nachkommastellen je nach Einheit
+                if reg["unit"] == "V":
+                    final_value = round(final_value, 1)  # 1 Nachkommastelle für Volt
+                elif reg["unit"] == "A":
+                    final_value = round(final_value, 3)  # 3 Nachkommastellen für Ampere
+                elif reg["unit"] == "W":
+                    final_value = round(final_value, 1)  # 1 Nachkommastelle für Watt
+                elif reg["unit"] == "Hz":
+                    final_value = round(final_value, 2)  # 2 Nachkommastellen für Frequenz
+                elif reg["unit"] == "kWh":
+                    final_value = round(final_value, 3)  # 3 Nachkommastellen für Energie
+                
                 # Erweiterte Plausibilitätsprüfung
                 if reg["unit"] == "V" and (final_value < 0 or final_value > 1000):
                     print(f"{reg['name']}: Unplausibel ({final_value:.3f} V)")
@@ -170,10 +182,10 @@ def main():
                     print(f"{reg['name']}: Unplausibel ({final_value:.3f} W)")
                     continue
                 
-                # MQTT Publishing
+                # MQTT Publishing mit gerundeten Werten
                 topic = f"{MQTT_PREFIX}/{reg['name']}"
                 mqtt_client.publish(topic, final_value)
-                print(f"{reg['name']}: {final_value:.3f} {reg['unit']}")
+                print(f"{reg['name']}: {final_value} {reg['unit']}")
                 successful_reads += 1
                 
             except Exception as e:

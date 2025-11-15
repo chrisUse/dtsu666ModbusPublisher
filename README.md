@@ -1,5 +1,7 @@
 # DTSU666 Modbus to MQTT Reader (Docker)
 
+This project is many generated with AI support!
+
 This Docker setup reads data from the Chint DTSU666 power meter via Modbus RTU and publishes it via MQTT with Home Assistant Auto-Discovery.
 
 ## 🚀 Quick Start
@@ -36,10 +38,10 @@ BAUDRATE=9600                 # Standard Baudrate
 TIMEOUT=1.0                   # Timeout in seconds
 
 # MQTT Configuration  
-MQTT_BROKER=192.168.10.63     # IP of your MQTT Broker
+MQTT_BROKER=192.168.1.100     # IP of your MQTT Broker
 MQTT_PORT=1883                # MQTT Port (default: 1883)
-MQTT_USER=user1               # MQTT Username
-MQTT_PASS=user1               # MQTT Password
+MQTT_USER=your_user               # MQTT Username
+MQTT_PASS=your_password               # MQTT Password
 MQTT_PREFIX=chint/dtsu666     # Topic prefix
 
 # Device Configuration
@@ -114,7 +116,7 @@ groups $USER
 **No MQTT connection:**
 ```bash
 # Test MQTT broker
-mosquitto_pub -h 192.168.10.63 -p 1883 -u user1 -P user1 -t test -m "hello"
+mosquitto_pub -h 192.168.1.100 -p 1883 -u your_user -P your_password -t test -m "hello"
 ```
 
 **Modbus errors:**
